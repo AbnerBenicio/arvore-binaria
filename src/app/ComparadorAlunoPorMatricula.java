@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 /**
  *
- * @author victoriocarvalho
+ * @author abner, filipe moura, joão marcos, vinicius
  * 
  * Essa é comparadora de alunos por matrícula que será utilizada para criar as árvores
  * nos programas de teste para redigir os relatórios.
