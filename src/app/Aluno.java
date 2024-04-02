@@ -36,6 +36,6 @@ public class Aluno  {
 
     @Override
     public String toString() {
-        return ("Matrícula: " + this.matricula + ":" + this.nome);
+        return ("Matrícula: " + this.matricula + ": " + this.nome);
     }
 }

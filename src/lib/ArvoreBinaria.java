@@ -14,7 +14,7 @@ import java.util.Comparator;
 public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     
     protected No<T> raiz = null;
-    protected Comparator<T> comparador; 
+    protected Comparator<T> comparador;
   
     public ArvoreBinaria(Comparator<T> comp) {
         comparador = comp;
@@ -33,6 +33,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             //Adicionando elemento em árvore com elementos
             adicionarFilho(raiz, filho);
         }
+        //Adicionar qntdNos++
     }
 
     //Método auxiliar para adicionar elementos
@@ -45,6 +46,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             } else {
                 adicionarFilho(raiz.getFilhoEsquerda(), filho);
             }
+            //Adicionando à direita
         } else {
             if (raiz.getFilhoDireita() == null) {
                 raiz.setFilhoDireita(filho);
@@ -54,21 +56,27 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         }
     }
 
-
+    //Método de pesquisa de elementos
     @Override
     public T pesquisar(T valor) {
+        //Chamando método auxiliar para encontrar elemento
         return encontrarFilho(raiz, valor);
     }
 
+    //Método auxiliar para encontrar elemento
     private T encontrarFilho(No<T> raiz, T valor) {
+        //Verificando se nó é nulo
         if (raiz == null) {
             return null;
         } else {
+            //Verificando se achei o elemento
             if (comparador.compare(raiz.getValor(), valor) == 0) {
                 return raiz.getValor();
             } else {
+                //Buscando elemento à direita
                 if (comparador.compare(raiz.getValor(), valor) < 0) {
                     return encontrarFilho(raiz.getFilhoDireita(), valor);
+                //Buscando elemento à esquerda
                 } else {
                     return encontrarFilho(raiz.getFilhoEsquerda(), valor);
                 }
