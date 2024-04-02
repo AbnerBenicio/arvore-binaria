@@ -2,7 +2,7 @@ package app;
 
 /**
  *
- * @author victoriocarvalho
+ * @author abner, filipe moura, joão marcos, vinicius
  * 
  * Essa é a classe Aluno que será utilizada como tipo do conteúdo das árvores nos 
  * programas de teste para redigir os relatórios.

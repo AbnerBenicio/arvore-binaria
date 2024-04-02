@@ -9,7 +9,7 @@ import java.util.Comparator;
 
 /**
  *
- * @author victoriocarvalho
+ * @author abner, filipe moura, joão marcos, vinicius
  * 
  * É um requisito do trabalho que sua classe ArvoreBinária implemente esta interface!
  * Com isso garantiremos que você implementou todos os métodos obrigatórios e que 
