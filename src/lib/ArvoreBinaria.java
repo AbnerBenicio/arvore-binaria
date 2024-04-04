@@ -85,12 +85,73 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public T remover(T valor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        No<T> noRemovido = new No<T>(null);
+        raiz = removerRecursivo(raiz, valor, noRemovido);
+        return noRemovido.getValor();
     }
+
+    private No<T> removerRecursivo(No<T> raiz, T valor, No<T> noRemovido) {
+        // Se a raiz é nula, retorna nulo
+        if (raiz == null) {
+            return null;
+        }
+
+        int comparacao = comparador.compare(valor, raiz.getValor());
+        if (comparacao < 0) {
+            raiz.setFilhoEsquerda(removerRecursivo(raiz.getFilhoEsquerda(), valor, noRemovido));
+        }
+        else if (comparacao > 0) {
+            raiz.setFilhoDireita(removerRecursivo(raiz.getFilhoDireita(), valor, noRemovido));
+        }
+        else {
+            // O nó não tem filhos:
+            if (raiz.getFilhoEsquerda() == null && raiz.getFilhoDireita() == null) {
+                noRemovido.setValor(raiz.getValor());
+                return null;
+            }
+            // O nó tem 1 filho:
+            else if (raiz.getFilhoEsquerda() == null) {
+                noRemovido.setValor(raiz.getValor());
+                return raiz.getFilhoDireita();
+            } else if (raiz.getFilhoDireita() == null) {
+                noRemovido.setValor(raiz.getValor());
+                return raiz.getFilhoEsquerda();
+            }
+            // O nó tem dois filhos
+            else {
+                No<T> menor = encontrarMenor(raiz.getFilhoDireita());
+                noRemovido.setValor(raiz.getValor());
+                raiz.setValor(menor.getValor());
+                raiz.setFilhoDireita(removerRecursivo(raiz.getFilhoDireita(), menor.getValor(), noRemovido));
+            }
+        }
+        return raiz;
+    }
+
+    private No<T> encontrarMenor(No<T> raiz) {
+        while (raiz.getFilhoEsquerda() != null) {
+            raiz = raiz.getFilhoEsquerda();
+        }
+        return raiz;
+    }
+
 
     @Override
     public int altura() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return calcularAltura(raiz);
+    }
+
+    private int calcularAltura(No<T> raiz) {
+        // Caso base: se a raiz é nula, retorna 0
+        if (raiz == null) {
+            return 0;
+        } else {
+            // Calcula a altura das subárvores esquerda e direita
+            int alturaEsquerda = calcularAltura(raiz.getFilhoEsquerda());
+            int alturaDireita = calcularAltura(raiz.getFilhoDireita());
+            // Retorna a altura máxima entre as subárvores esquerda e direita, adicionando 1 para contar o nível atual
+            return Math.max(alturaEsquerda, alturaDireita) + 1;
+        }
     }
        
     
