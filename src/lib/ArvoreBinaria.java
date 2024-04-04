@@ -141,17 +141,13 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         return calcularAltura(raiz);
     }
 
-    private int calcularAltura(No<T> raiz) {
-        // Caso base: se a raiz é nula, retorna 0
-        if (raiz == null) {
+    private int calcularAltura(No<T> r) {
+        if (r == null)
             return 0;
-        } else {
-            // Calcula a altura das subárvores esquerda e direita
-            int alturaEsquerda = calcularAltura(raiz.getFilhoEsquerda());
-            int alturaDireita = calcularAltura(raiz.getFilhoDireita());
-            // Retorna a altura máxima entre as subárvores esquerda e direita, adicionando 1 para contar o nível atual
-            return Math.max(alturaEsquerda, alturaDireita) + 1;
-        }
+        if (r.getFilhoEsquerda() == null && r.getFilhoDireita() == null)
+            return 0;
+
+        return 1 + Math.max(calcularAltura(r.getFilhoDireita()), calcularAltura(r.getFilhoEsquerda()));
     }
        
     
