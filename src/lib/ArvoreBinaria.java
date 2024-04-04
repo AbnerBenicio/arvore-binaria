@@ -45,6 +45,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             } else {
                 adicionarFilho(raiz.getFilhoEsquerda(), filho);
             }
+            //Adicionando filho à direita
         } else {
             if (raiz.getFilhoDireita() == null) {
                 raiz.setFilhoDireita(filho);
@@ -55,20 +56,26 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     }
 
 
+    //Método de pesquisar elemento
     @Override
     public T pesquisar(T valor) {
         return encontrarFilho(raiz, valor);
     }
 
+    //Método auxiliar para pesquisar elemento
     private T encontrarFilho(No<T> raiz, T valor) {
+        //Verificando se a raiz é nula
         if (raiz == null) {
             return null;
         } else {
+            //Verificando se elemento foi encontrado
             if (comparador.compare(raiz.getValor(), valor) == 0) {
                 return raiz.getValor();
             } else {
+                //Procurando elemento na direita
                 if (comparador.compare(raiz.getValor(), valor) < 0) {
                     return encontrarFilho(raiz.getFilhoDireita(), valor);
+                //Procurando elemento na esquerda
                 } else {
                     return encontrarFilho(raiz.getFilhoEsquerda(), valor);
                 }
@@ -83,13 +90,16 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    //Método de remoçao
     @Override
     public T remover(T valor) {
         No<T> noRemovido = new No<T>(null);
-        raiz = removerRecursivo(raiz, valor, noRemovido);
+        noRemovido = removerRecursivo(raiz, valor, noRemovido);
+        //Retornando valor do nó removido
         return noRemovido.getValor();
     }
 
+    //Método auxiliar para remover elemento
     private No<T> removerRecursivo(No<T> raiz, T valor, No<T> noRemovido) {
         // Se a raiz é nula, retorna nulo
         if (raiz == null) {
@@ -128,26 +138,35 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         return raiz;
     }
 
+    //Método auxiliar para encontrar menor elemento
     private No<T> encontrarMenor(No<T> raiz) {
         while (raiz.getFilhoEsquerda() != null) {
             raiz = raiz.getFilhoEsquerda();
         }
+        //Retornando menor nó
         return raiz;
     }
 
 
+    //Método para encontrar altura
     @Override
     public int altura() {
+        //Retornando altura
         return calcularAltura(raiz);
     }
 
+    //Método auxiliar para encontrar altura
     private int calcularAltura(No<T> r) {
-        if (r == null)
+        //Verificando se raiz existe
+        if (r == null) {
             return 0;
-        if (r.getFilhoEsquerda() == null && r.getFilhoDireita() == null)
+        //Verificando se nó tem filhos
+        } else if (r.getFilhoEsquerda() == null && r.getFilhoDireita() == null) {
             return 0;
-
-        return 1 + Math.max(calcularAltura(r.getFilhoDireita()), calcularAltura(r.getFilhoEsquerda()));
+        } else {
+            //Retornando altura
+            return 1 + Math.max(calcularAltura(r.getFilhoDireita()), calcularAltura(r.getFilhoEsquerda()));
+        }
     }
        
     
