@@ -6,9 +6,6 @@
 package lib;
 
 import java.util.Comparator;
-import java.util.Queue;
-import java.util.LinkedList;
-
 
 /**
  *
@@ -101,7 +98,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     public int quantidadeNos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
 
     @Override
