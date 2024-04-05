@@ -5,6 +5,7 @@
  */
 package lib;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
@@ -88,7 +89,26 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public T pesquisar(T valor, Comparator comparador) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<T> nosDaLista = new ArrayList<T>();
+        pesquisarComComparator(raiz, nosDaLista);
+
+        for (int i = 0; i < nosDaLista.size(); i++) {
+            if (comparador.compare(nosDaLista.get(i), valor) == 0){
+                return nosDaLista.get(i);
+            }
+        }
+
+        return null;
+
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates
+    }
+
+    private void pesquisarComComparator(No<T> raiz, ArrayList<T> listNodes){
+        if (raiz != null) {
+            pesquisarComComparator(raiz.getFilhoEsquerda(), listNodes);
+            listNodes.add(raiz.getValor());
+            pesquisarComComparator(raiz.getFilhoDireita(), listNodes);
+        }
     }
 
     @Override
