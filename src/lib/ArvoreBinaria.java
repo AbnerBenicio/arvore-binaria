@@ -47,7 +47,8 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             } else {
                 adicionarFilho(raiz.getFilhoEsquerda(), filho);
             }
-            //Adicionando à direita
+
+            //Adicionando filho à direita
         } else {
             if (raiz.getFilhoDireita() == null) {
                 raiz.setFilhoDireita(filho);
@@ -57,27 +58,27 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         }
     }
 
-    //Método de pesquisa de elementos
+    //Método de pesquisar elemento
     @Override
     public T pesquisar(T valor) {
         //Chamando método auxiliar para encontrar elemento
         return encontrarFilho(raiz, valor);
     }
 
-    //Método auxiliar para encontrar elemento
+    //Método auxiliar para pesquisar elemento
     private T encontrarFilho(No<T> raiz, T valor) {
-        //Verificando se nó é nulo
+        //Verificando se a raiz é nula
         if (raiz == null) {
             return null;
         } else {
-            //Verificando se achei o elemento
+            //Verificando se elemento foi encontrado
             if (comparador.compare(raiz.getValor(), valor) == 0) {
                 return raiz.getValor();
             } else {
-                //Buscando elemento à direita
+                //Procurando elemento na direita
                 if (comparador.compare(raiz.getValor(), valor) < 0) {
                     return encontrarFilho(raiz.getFilhoDireita(), valor);
-                //Buscando elemento à esquerda
+                //Procurando elemento na esquerda
                 } else {
                     return encontrarFilho(raiz.getFilhoEsquerda(), valor);
                 }
@@ -111,14 +112,83 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         }
     }
 
+    //Método de remoçao
     @Override
     public T remover(T valor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        No<T> noRemovido = new No<T>(null);
+        noRemovido = removerRecursivo(raiz, valor, noRemovido);
+        //Retornando valor do nó removido
+        return noRemovido.getValor();
     }
 
+    //Método auxiliar para remover elemento
+    private No<T> removerRecursivo(No<T> raiz, T valor, No<T> noRemovido) {
+        // Se a raiz é nula, retorna nulo
+        if (raiz == null) {
+            return null;
+        }
+
+        int comparacao = comparador.compare(valor, raiz.getValor());
+        if (comparacao < 0) {
+            raiz.setFilhoEsquerda(removerRecursivo(raiz.getFilhoEsquerda(), valor, noRemovido));
+        }
+        else if (comparacao > 0) {
+            raiz.setFilhoDireita(removerRecursivo(raiz.getFilhoDireita(), valor, noRemovido));
+        }
+        else {
+            // O nó não tem filhos:
+            if (raiz.getFilhoEsquerda() == null && raiz.getFilhoDireita() == null) {
+                noRemovido.setValor(raiz.getValor());
+                return null;
+            }
+            // O nó tem 1 filho:
+            else if (raiz.getFilhoEsquerda() == null) {
+                noRemovido.setValor(raiz.getValor());
+                return raiz.getFilhoDireita();
+            } else if (raiz.getFilhoDireita() == null) {
+                noRemovido.setValor(raiz.getValor());
+                return raiz.getFilhoEsquerda();
+            }
+            // O nó tem dois filhos
+            else {
+                No<T> menor = encontrarMenor(raiz.getFilhoDireita());
+                noRemovido.setValor(raiz.getValor());
+                raiz.setValor(menor.getValor());
+                raiz.setFilhoDireita(removerRecursivo(raiz.getFilhoDireita(), menor.getValor(), noRemovido));
+            }
+        }
+        return raiz;
+    }
+
+    //Método auxiliar para encontrar menor elemento
+    private No<T> encontrarMenor(No<T> raiz) {
+        while (raiz.getFilhoEsquerda() != null) {
+            raiz = raiz.getFilhoEsquerda();
+        }
+        //Retornando menor nó
+        return raiz;
+    }
+
+
+    //Método para encontrar altura
     @Override
     public int altura() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Retornando altura
+        return calcularAltura(raiz);
+    }
+
+    //Método auxiliar para encontrar altura
+    private int calcularAltura(No<T> r) {
+        //Verificando se raiz existe
+        if (r == null) {
+            return 0;
+        //Verificando se nó tem filhos
+        } else if (r.getFilhoEsquerda() == null && r.getFilhoDireita() == null) {
+            return 0;
+        } else {
+            //Retornando altura
+            return 1 + Math.max(calcularAltura(r.getFilhoDireita()), calcularAltura(r.getFilhoEsquerda()));
+        }
     }
        
     
@@ -127,14 +197,62 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+
     @Override
     public String caminharEmNivel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.    
+        /**
+         * Decorator para o verdadeiro método adicionando os colchetes no início do retorno
+         * @return Retorna uma string contendo os valores visitados.
+         */
+        StringBuilder result = new StringBuilder();
+        result.append("[\n");
+        caminharEmNivel(raiz, result);
+        result.append("]\n");
+        return result.toString().trim();
     }
-    
+
+    private void caminharEmNivel(No<T> raiz, StringBuilder result) {
+        /**
+         * Método que faz a busca em profundidade, começa printando os valores do nó raíz,
+         * aplica o método recursivamente na sub-árvore esquerda (se houver)
+         * e depois na sub-árvore direita (se houver
+         * @return Nada, apenas altera a variável result.
+         */
+
+        if (raiz == null)
+            return;
+        // Adiciona valor do nó atual
+        result.append(raiz.getValor()).append(" \n ");
+
+        // Chama a função recursivamente para os filhos
+        caminharEmNivel(raiz.getFilhoEsquerda(), result);
+        caminharEmNivel(raiz.getFilhoDireita(), result);
+    }
+
+
     @Override
     public String caminharEmOrdem() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.    
+        /*
+         * Decorator para o verdadeiro método adicionando os colchetes no início do retorno
+         * @return Retorna uma string contendo os valores visitados.
+         */
+        StringBuilder result = new StringBuilder();
+        result.append("[\n");
+        caminharEmOrdem(raiz, result);
+        result.append("]\n");
+        return result.toString().trim();
     }
-        
+
+    private void caminharEmOrdem(No<T> raiz, StringBuilder result) {
+        /*
+         * Método que faz a busca em ordem, começa a busca pela sub-árvore esquerda,
+         * após isso vai para o nó raíz e termina pela sub-árvore direita
+         * @return Nada, apenas altera a variável result.
+         */
+        if (raiz != null) {
+            caminharEmOrdem(raiz.getFilhoEsquerda(), result);
+            result.append(raiz.getValor()).append(" \n ");
+            caminharEmOrdem(raiz.getFilhoDireita(), result);
+        }
+    }
 }
