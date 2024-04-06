@@ -7,6 +7,8 @@ package lib;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Queue;
+import java.util.LinkedList;
 
 /**
  *
@@ -211,22 +213,23 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         return result.toString().trim();
     }
 
-    private void caminharEmNivel(No<T> raiz, StringBuilder result) {
-        /**
-         * Método que faz a busca em profundidade, começa printando os valores do nó raíz,
-         * aplica o método recursivamente na sub-árvore esquerda (se houver)
-         * e depois na sub-árvore direita (se houver
-         * @return Nada, apenas altera a variável result.
-         */
 
+    private void caminharEmNivel(No<T> raiz, StringBuilder result) {
         if (raiz == null)
             return;
-        // Adiciona valor do nó atual
-        result.append(raiz.getValor()).append(" \n ");
 
-        // Chama a função recursivamente para os filhos
-        caminharEmNivel(raiz.getFilhoEsquerda(), result);
-        caminharEmNivel(raiz.getFilhoDireita(), result);
+        Queue<No<T>> queue = new LinkedList<>();
+        queue.add(raiz);
+
+        while (!queue.isEmpty()) {
+            No<T> current = queue.poll();
+            result.append(current.getValor()).append(" \n ");
+
+            if (current.getFilhoEsquerda() != null)
+                queue.add(current.getFilhoEsquerda());
+            if (current.getFilhoDireita() != null)
+                queue.add(current.getFilhoDireita());
+        }
     }
 
 
