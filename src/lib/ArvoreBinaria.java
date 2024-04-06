@@ -192,11 +192,29 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             return 1 + Math.max(calcularAltura(r.getFilhoDireita()), calcularAltura(r.getFilhoEsquerda()));
         }
     }
-       
-    
+
+
+    //Método para encontrar a quantidade de elementos/nós na árvore
     @Override
     public int quantidadeNos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ContRecursivo(raiz);
+    }
+
+    //Método auxiliar para encontrar a quantidade de nós
+    @Override
+    public int ContRecursivo(No<T> r) {
+        //Verificando se raiz existe
+        if (r == null) {
+            return 0;
+        } else {
+            //Função recursiva no qual busca o filho da esquerda e da direita
+            int CountE = ContRecursivo(r.getFilhoEsquerda());
+            int CountD = ContRecursivo(r.getFilhoDireita());
+
+            //Retorna os nós da esquerda e da direita + o contador do nó
+            return 1 + CountE + CountD;
+        }
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 
