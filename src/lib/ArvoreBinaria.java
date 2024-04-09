@@ -220,7 +220,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public String caminharEmNivel() {
-        /**
+        /*
          * Decorator para o verdadeiro método adicionando os colchetes no início do retorno
          * @return Retorna uma string contendo os valores visitados.
          */
