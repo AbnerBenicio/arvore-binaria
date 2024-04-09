@@ -92,12 +92,12 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public T pesquisar(T valor, Comparator comparador) {
-        ArrayList<T> nosDaLista = new ArrayList<T>();
-        pesquisarComComparator(raiz, nosDaLista);
+        ArrayList<T> listNode = new ArrayList<T>();
+        pesquisarComComparator(raiz, listNode);
 
-        for (int i = 0; i < nosDaLista.size(); i++) {
-            if (comparador.compare(nosDaLista.get(i), valor) == 0){
-                return nosDaLista.get(i);
+        for (int i = 0; i < listNode.size(); i++) {
+            if (comparador.compare(listNode.get(i), valor) == 0){
+                return listNode.get(i);
             }
         }
 
@@ -106,11 +106,11 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates
     }
 
-    private void pesquisarComComparator(No<T> raiz, ArrayList<T> listNodes){
+    private void pesquisarComComparator(No<T> raiz, ArrayList<T> listNode) {
         if (raiz != null) {
-            pesquisarComComparator(raiz.getFilhoEsquerda(), listNodes);
-            listNodes.add(raiz.getValor());
-            pesquisarComComparator(raiz.getFilhoDireita(), listNodes);
+            pesquisarComComparator(raiz.getFilhoEsquerda(), listNode);
+            listNode.add(raiz.getValor());
+            pesquisarComComparator(raiz.getFilhoDireita(), listNode);
         }
     }
 
