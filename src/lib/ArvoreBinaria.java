@@ -241,7 +241,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
         while (!queue.isEmpty()) {
             No<T> current = queue.poll();
-            result.append(current.getValor()).append(" \n ");
+            result.append(current.getValor()).append("\n");
 
             if (current.getFilhoEsquerda() != null)
                 queue.add(current.getFilhoEsquerda());
@@ -272,7 +272,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
          */
         if (raiz != null) {
             caminharEmOrdem(raiz.getFilhoEsquerda(), result);
-            result.append(raiz.getValor()).append(" \n ");
+            result.append(raiz.getValor()).append("\n");
             caminharEmOrdem(raiz.getFilhoDireita(), result);
         }
     }

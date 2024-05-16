@@ -1,5 +1,7 @@
 package app;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author abner, filipe moura, joão marcos, vinicius
@@ -11,10 +13,12 @@ package app;
 public class Aluno  {
     private int matricula;
     private String nome;
+    private ArrayList<Disciplina> disciplinasCursadas;
 
     public Aluno(int matricula, String nome){
         this.matricula = matricula;
-        this.nome = nome;        
+        this.nome = nome;
+        this.disciplinasCursadas = new ArrayList<Disciplina>();
     }
 
 
@@ -34,8 +38,23 @@ public class Aluno  {
         this.nome = nome;
     }
 
+    public ArrayList<Disciplina> getDisciplinasCursadas() {
+        return disciplinasCursadas;
+    }
+
+    public void addDisciplinaCursada(Disciplina disciplina) {
+        disciplinasCursadas.add(disciplina);
+    }
+
     @Override
     public String toString() {
-        return ("Matrícula: " + this.matricula + ": " + this.nome);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Matrícula: ").append(this.getMatricula()).append(": ").append(this.getNome()).append("\nDisciplinas cursadas:\n");
+
+        for (Disciplina disciplina : this.getDisciplinasCursadas()) {
+            stringBuilder.append(disciplina.toString()).append("\n");
+        }
+
+        return stringBuilder.toString();
     }
 }

@@ -30,4 +30,12 @@ public class Disciplina {
     public ArrayList<Disciplina> getPreRequisitos() {
         return preRequisitos;
     }
+
+    public void addPreRequisito(Disciplina disciplina) {
+        preRequisitos.add(disciplina);
+    }
+
+    public String toString() {
+        return ("Código " + this.getCodigo() + ": " + this.getNome() + " - " + this.getCargaHoraria() + "h");
+    }
 }
