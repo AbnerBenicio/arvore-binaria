@@ -50,7 +50,7 @@ public class Aplicativo {
             String nomeDisciplina = disciplinaInfos.nextLine();
 
             //Solicitando carga horária da disciplina
-            System.out.println("Digitea carga horária da disciplina:");
+            System.out.println("Digite a carga horária da disciplina:");
             int chDisciplina = disciplinaInfos.nextInt();
 
             //Solicitando código da disciplina
@@ -75,7 +75,7 @@ public class Aplicativo {
     public void CadastrarPreRequisito() {
         //Exibindo disciplinas cadastradas
         System.out.println("Disciplinas cadastradas: \n");
-        System.out.println(disciplinas.caminharEmNivel());
+        System.out.println(disciplinas.caminharEmOrdem());
 
         //Inicializando input
         Scanner disciplina = new Scanner(System.in);
@@ -97,7 +97,12 @@ public class Aplicativo {
                 */
                 Disciplina disciplinaSelecionada = disciplinas.pesquisar(new Disciplina(codDisciplinaSelecionada, "", 0));
                 Disciplina preRequisito = disciplinas.pesquisar(new Disciplina(codPreRequisito, "", 0));
-                disciplinaSelecionada.addPreRequisito(preRequisito);
+                if (!disciplinaSelecionada.getPreRequisitos().contains(preRequisito)) {
+                    System.out.println("Pré-requisito cadastrado com sucesso");
+                    disciplinaSelecionada.addPreRequisito(preRequisito);
+                } else {
+                    System.out.println("A disciplina já possui esse pré-requisito");
+                }
             } else {
                 //Se forem iguais, lança um erro
                 throw new RuntimeException();
@@ -110,16 +115,139 @@ public class Aplicativo {
 
     }
 
+    //Método para informar se aluno cursou a disciplina
     public void InformaDisciplina() {
-        //Escrever método
+        //Inicializando input
+        Scanner input = new Scanner(System.in);
+
+        try {
+            //Informando alunos cadastrados
+            System.out.println("Alunos cadastradas: \n");
+            System.out.println(alunos.caminharEmOrdem());
+
+            //Solicitando matrícula do aluno
+            System.out.println("Digite a matrícula do aluno que você deseja verificar:");
+            int codAluno = input.nextInt();
+
+            //Informando disciplinas cadastradas
+            System.out.println("Disciplinas cadastradas: \n");
+            System.out.println(disciplinas.caminharEmOrdem());
+
+            //Solicitando código da disciplina
+            System.out.println("Digite o código da disciplina que você deseja verificar:");
+            int codDisciplina = input.nextInt();
+
+            //Buscando disciplina
+            Disciplina disciplina = disciplinas.pesquisar(new Disciplina(codDisciplina, "", 0));
+            //Buscando aluno
+            Aluno aluno = alunos.pesquisar(new Aluno(codAluno, ""));
+            //Verificando se aluno cursou a disciplina
+            if (disciplina.getPreRequisitos().isEmpty()) {
+                System.out.println("O aluno de matrícula " + codAluno + " cursou a disciplina de código " + codDisciplina);
+                //Adicionando disciplina
+                if (!aluno.getDisciplinasCursadas().contains(disciplina)) {
+                    aluno.addDisciplinaCursada(disciplina);
+                }
+            } else if (aluno.getDisciplinasCursadas().containsAll(disciplina.getPreRequisitos())) {
+                System.out.println("O aluno de matrícula " + codAluno + " cursou a disciplina de código " + codDisciplina);
+                for (Disciplina d : aluno.getDisciplinasCursadas()) {
+                    System.out.println(d.toString());
+                }
+                //Adicionando disciplina
+                if (!aluno.getDisciplinasCursadas().contains(disciplina)) {
+                    aluno.addDisciplinaCursada(disciplina);
+                }
+            } else {
+                //Informando que aluno não cursou a disciplina
+                System.out.println("O aluno de matrícula " + codAluno + " não cursou a disciplina de código " + codDisciplina);
+            }
+        } catch (Exception e) {
+            //Informando erro ao verificar
+            System.out.println("Erro ao verificar");
+        }
+
     }
 
+    //Função para consultar aluno
     public void ConsultarAluno() {
-        //Escrever método
+        //Inicializando input
+        Scanner input = new Scanner(System.in);
+
+        //Solicitando forma de consulta
+        System.out.println("Como você deseja consultar o aluno?");
+        System.out.println("1 - Matrícula");
+        System.out.println("2 - Nome");
+
+        //Criando objeto aluno
+        Aluno aluno;
+        try {
+            //Verificando opção
+            switch (input.nextLine()) {
+                //Cosnulta por matrícula
+                case "1":
+                    //Solicitando matrícula do aluno
+                    System.out.println("Digite a matrícula do aluno:");
+                    int codAluno = input.nextInt();
+                    aluno = alunos.pesquisar(new Aluno(codAluno, ""));
+                    //Exibindo informações do aluno
+                    System.out.println(aluno.toString());
+                    System.out.println("Disciplinas cursadas:");
+                    for (Disciplina disciplina : aluno.getDisciplinasCursadas()) {
+                        System.out.println(disciplina.toString());
+                    }
+                    break;
+                //Consulta por nome
+                case "2":
+                    //Solicitando nome do aluno
+                    System.out.println("Digite o nome do aluno:");
+                    String nomeAluno = input.nextLine();
+                    aluno = alunos.pesquisar(new Aluno(0, nomeAluno), new ComparadorAlunoPorNome());
+                    //Exibindo informações do aluno
+                    System.out.println(aluno.toString());
+                    System.out.println("Disciplinas cursadas:");
+                    for (Disciplina disciplina : aluno.getDisciplinasCursadas()) {
+                        System.out.println(disciplina.toString());
+                    }
+                    break;
+                default:
+                    //Informando opção inválida escolhida
+                    System.out.println("Opção inválida");
+            }
+        } catch (Exception e) {
+            //Informando erro ao consultar aluno
+            System.out.println("Erro ao consultar aluno");
+        }
+
     }
 
+    //Método para excluir aluno
     public void ExcluirAluno() {
-        //Escrever método
+        //Inicialiando input
+        Scanner input = new Scanner(System.in);
+
+        //Exibindo alunos cadastrados
+        System.out.println("Alunos cadastradas: \n");
+        System.out.println(alunos.caminharEmOrdem());
+        try {
+            //Solicitando matrícula do aluno
+            System.out.println("Digite a matrícula do aluno que você deseja excluir:");
+            int codAluno = input.nextInt();
+            Aluno aluno = alunos.pesquisar(new Aluno(codAluno, ""));
+            //Verificando se aluno existe
+            if (aluno != null) {
+                //Removendo aluno
+                alunos.remover(aluno);
+                //Informando remoção
+                System.out.println("Aluno " + aluno.getNome() + " removido com sucesso.");
+            } else {
+                //Informando que aluno não foi encontrado
+                System.out.println("Aluno não encontrado.");
+            }
+        } catch (Exception e) {
+            //Informando erro ao excluir
+            System.out.println("Erro ao excluir aluno");
+        }
+
     }
 
     //Método para exibir menu

@@ -117,11 +117,12 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     //Método de remoçao
     @Override
     public T remover(T valor) {
-        No<T> noRemovido = new No<T>(null);
-        noRemovido = removerRecursivo(raiz, valor, noRemovido);
-        //Retornando valor do nó removido
-        return noRemovido.getValor();
+            No<T> noRemovido = new No<>(null);
+            raiz = removerRecursivo(raiz, valor, noRemovido);
+            // Retornando valor do nó removido
+            return valor;
     }
+
 
     //Método auxiliar para remover elemento
     private No<T> removerRecursivo(No<T> raiz, T valor, No<T> noRemovido) {
@@ -133,28 +134,23 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         int comparacao = comparador.compare(valor, raiz.getValor());
         if (comparacao < 0) {
             raiz.setFilhoEsquerda(removerRecursivo(raiz.getFilhoEsquerda(), valor, noRemovido));
-        }
-        else if (comparacao > 0) {
+        } else if (comparacao > 0) {
             raiz.setFilhoDireita(removerRecursivo(raiz.getFilhoDireita(), valor, noRemovido));
-        }
-        else {
+        } else {
             // O nó não tem filhos:
+            noRemovido.setValor(raiz.getValor());
             if (raiz.getFilhoEsquerda() == null && raiz.getFilhoDireita() == null) {
-                noRemovido.setValor(raiz.getValor());
                 return null;
             }
             // O nó tem 1 filho:
             else if (raiz.getFilhoEsquerda() == null) {
-                noRemovido.setValor(raiz.getValor());
                 return raiz.getFilhoDireita();
             } else if (raiz.getFilhoDireita() == null) {
-                noRemovido.setValor(raiz.getValor());
                 return raiz.getFilhoEsquerda();
             }
             // O nó tem dois filhos
             else {
                 No<T> menor = encontrarMenor(raiz.getFilhoDireita());
-                noRemovido.setValor(raiz.getValor());
                 raiz.setValor(menor.getValor());
                 raiz.setFilhoDireita(removerRecursivo(raiz.getFilhoDireita(), menor.getValor(), noRemovido));
             }

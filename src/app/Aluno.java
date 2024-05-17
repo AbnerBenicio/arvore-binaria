@@ -48,13 +48,6 @@ public class Aluno  {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Matrícula: ").append(this.getMatricula()).append(": ").append(this.getNome()).append("\nDisciplinas cursadas:\n");
-
-        for (Disciplina disciplina : this.getDisciplinasCursadas()) {
-            stringBuilder.append(disciplina.toString()).append("\n");
-        }
-
-        return stringBuilder.toString();
+        return ("Matrícula " + this.getMatricula() + ": " + this.getNome());
     }
 }
