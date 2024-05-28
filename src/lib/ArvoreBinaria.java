@@ -34,20 +34,19 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             this.raiz = filho;
         } else {
             //Adicionando elemento em árvore com elementos
-            adicionarFilho(raiz, filho);
+            this.raiz = adicionarFilho(raiz, filho);
         }
-        //Adicionar qntdNos++
     }
 
     //Método auxiliar para adicionar elementos
-    private void adicionarFilho(No<T> raiz, No<T> filho) {
+    protected No<T> adicionarFilho(No<T> raiz, No<T> filho) {
         //Verificando se deve ser adicionando à esquerda ou à direita
         if (comparador.compare(raiz.getValor(), filho.getValor()) > 0) {
             //Adicionando à esquerda
             if (raiz.getFilhoEsquerda() == null) {
                 raiz.setFilhoEsquerda(filho);
             } else {
-                adicionarFilho(raiz.getFilhoEsquerda(), filho);
+                raiz.setFilhoEsquerda(adicionarFilho(raiz.getFilhoEsquerda(), filho));
             }
 
             //Adicionando filho à direita
@@ -55,9 +54,11 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             if (raiz.getFilhoDireita() == null) {
                 raiz.setFilhoDireita(filho);
             } else {
-                adicionarFilho(raiz.getFilhoDireita(), filho);
+                raiz.setFilhoDireita(adicionarFilho(raiz.getFilhoDireita(), filho));
             }
         }
+
+        return raiz;
     }
 
     //Método de pesquisar elemento
@@ -120,12 +121,12 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             No<T> noRemovido = new No<>(null);
             raiz = removerRecursivo(raiz, valor, noRemovido);
             // Retornando valor do nó removido
-            return valor;
+            return noRemovido.getValor();
     }
 
 
     //Método auxiliar para remover elemento
-    private No<T> removerRecursivo(No<T> raiz, T valor, No<T> noRemovido) {
+    protected No<T> removerRecursivo(No<T> raiz, T valor, No<T> noRemovido) {
         // Se a raiz é nula, retorna nulo
         if (raiz == null) {
             return null;

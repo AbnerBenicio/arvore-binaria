@@ -63,6 +63,21 @@ public class No<T> {
     public void setFilhoEsquerda(No<T> filhoEsquerda) {
         this.filhoEsquerda = filhoEsquerda;
     }
+
+    public int obterAltura() {
+        //Parte do João (modificar retorno)
+        return 1;
+    }
+
+    private int obterAltura(No<T> r) {
+        //Parte do João (modificar retorno)
+        return 1;
+    }
+
+    public int fatorBalanceamento () {
+        //Parte do João (modificar retorno)
+        return 1;
+    }
     
     
 }
