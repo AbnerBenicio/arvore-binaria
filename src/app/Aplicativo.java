@@ -227,7 +227,7 @@ public class Aplicativo {
 
         //Exibindo alunos cadastrados
         System.out.println("Alunos cadastradas: \n");
-        System.out.println(alunos.caminharEmNivel());
+        System.out.println(alunos.caminharEmOrdem());
         try {
             //Solicitando matrícula do aluno
             System.out.println("Digite a matrícula do aluno que você deseja excluir:");
