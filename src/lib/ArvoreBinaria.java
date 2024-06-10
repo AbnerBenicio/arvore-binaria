@@ -93,18 +93,22 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public T pesquisar(T valor, Comparator comparador) {
-        ArrayList<T> listNode = new ArrayList<T>();
-        pesquisarComComparator(raiz, listNode);
+        // se o comparador for o mesmo que indexa a arvore
+        if(comparador == this.comparador){
+            return pesquisar(valor);
+        } else{
+            ArrayList<T> listNode = new ArrayList<T>();
+            pesquisarComComparator(raiz, listNode);
 
-        for (int i = 0; i < listNode.size(); i++) {
-            if (comparador.compare(listNode.get(i), valor) == 0){
-                return listNode.get(i);
+            for (int i = 0; i < listNode.size(); i++) {
+                if (comparador.compare(listNode.get(i), valor) == 0){
+                    return listNode.get(i);
+                }
             }
+
+            return null;
         }
 
-        return null;
-
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates
     }
 
     private void pesquisarComComparator(No<T> raiz, ArrayList<T> listNode) {
