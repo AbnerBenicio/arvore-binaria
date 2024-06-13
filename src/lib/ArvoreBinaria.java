@@ -94,28 +94,27 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
     @Override
     public T pesquisar(T valor, Comparator comparador) {
         // se o comparador for o mesmo que indexa a arvore
-        if(comparador == this.comparador){
+        if(comparador.getClass() == this.comparador.getClass()){
             return pesquisar(valor);
         } else{
-            ArrayList<T> listNode = new ArrayList<T>();
-            pesquisarComComparator(raiz, listNode);
+            No<T> noValorEncontrado = new No<T>(null);
+            pesquisarComComparator(valor, comparador, this.raiz, noValorEncontrado); //objeto noValorEncontrado passado por referencia
 
-            for (int i = 0; i < listNode.size(); i++) {
-                if (comparador.compare(listNode.get(i), valor) == 0){
-                    return listNode.get(i);
-                }
-            }
-
-            return null;
+            return noValorEncontrado.getValor(); //null ou valorEncontrado
         }
-
     }
 
-    private void pesquisarComComparator(No<T> raiz, ArrayList<T> listNode) {
+    private void pesquisarComComparator(T valor, Comparator comparador, No<T> raiz, No<T> noValorEncontrado) {
         if (raiz != null) {
-            pesquisarComComparator(raiz.getFilhoEsquerda(), listNode);
-            listNode.add(raiz.getValor());
-            pesquisarComComparator(raiz.getFilhoDireita(), listNode);
+            pesquisarComComparator(valor, comparador, raiz.getFilhoEsquerda(), noValorEncontrado);
+            //se encontrou o objeto desejado, copia seus atributos para o noValorEncontrado
+            if (comparador.compare(raiz.getValor(), valor) == 0) {
+                noValorEncontrado.setFilhoEsquerda(raiz.getFilhoEsquerda());
+                noValorEncontrado.setFilhoDireita(raiz.getFilhoDireita());
+                noValorEncontrado.setValor(raiz.getValor());
+                return;
+            }
+            pesquisarComComparator(valor, comparador, raiz.getFilhoDireita(), noValorEncontrado);
         }
     }
 
