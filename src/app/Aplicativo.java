@@ -213,7 +213,7 @@ public class Aplicativo {
                 }
             } else {
                 //Informando que aluno não cursou a disciplina
-                System.out.println("O aluno " + aluno.getNome() + "-" + matAluno + " não cursou a disciplina " + disciplina.getNome() + "-" + codDisciplina);
+                System.out.println("O aluno " + aluno.getNome() + " - " + matAluno + " não cursou a disciplina " + disciplina.getNome() + " - " + codDisciplina);
             }
         } catch (Exception e) {
             //Informando erro ao verificar
