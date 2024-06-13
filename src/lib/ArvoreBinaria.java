@@ -214,7 +214,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             //Retorna os nós da esquerda e da direita + o contador do nó
             return 1 + CountE + CountD;
         }
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 
