@@ -156,7 +156,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             else {
                 No<T> menor = encontrarMenor(raiz.getFilhoDireita());
                 raiz.setValor(menor.getValor());
-                raiz.setFilhoDireita(removerRecursivo(raiz.getFilhoDireita(), menor.getValor(), noRemovido));
+                raiz.setFilhoDireita(removerRecursivo(raiz.getFilhoDireita(), menor.getValor(), new No<T>(null)));
             }
         }
         return raiz;
