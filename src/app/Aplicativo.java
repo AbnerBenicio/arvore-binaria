@@ -36,7 +36,7 @@ public class Aplicativo {
             if (String.format("" + matriculaAluno).equals(""))
                 throw new RuntimeException("Erro: A matrícula do aluno não pode ser vazio.");
             if (alunos.pesquisar(new Aluno(matriculaAluno, "")) != null)
-                throw new RuntimeException("Erro: O aluno já foi cadastrado anteriormente.");
+                throw new RuntimeException("Erro: Já existe um aluno com esta matrícula.");
 
             //Armazenando aluno
             alunos.adicionar(aluno);
@@ -82,7 +82,7 @@ public class Aplicativo {
             if (String.format("" + codigoDisciplina).equals(""))
                 throw new RuntimeException("Erro: O código da disciplina não pode ser vazio.");
             if (disciplinas.pesquisar(new Disciplina(codigoDisciplina, "", 0)) != null)
-                throw new RuntimeException("Erro: A disciplina já foi cadastrado anteriormente.");
+                throw new RuntimeException("Erro: Já existe uma disciplina com este código.");
 
             //Armazenando disciplina
             disciplinas.adicionar(disciplina);
@@ -127,8 +127,7 @@ public class Aplicativo {
 
             for (Disciplina disciplina: disciplinas.pesquisar(new Disciplina(codPreRequisito, "", 0)).getPreRequisitos())
                 if(disciplina.getCodigo() == codDisciplinaSelecionada)
-                    throw new RuntimeException("Erro: A disciplina que você está tentando adicionar como pré-requisito da disciplina 1" +
-                        "tem a disciplina 1 como pré-requisito.");
+                    throw new RuntimeException("Erro: A disciplina que você está tentando adicionar tem como pré-requisito a disciplina " + disciplinas.pesquisar(new Disciplina(codDisciplinaSelecionada, "", 0)).getNome() + ".");
 
 
             //Verificando se códigos são iguais
@@ -177,7 +176,7 @@ public class Aplicativo {
 
             //verificando se não há erro
             if (alunos.pesquisar(new Aluno(matAluno, "")) == null)
-                throw new RuntimeException("Erro: Não há aluno cadastrado com esse código.");
+                throw new RuntimeException("Erro: Não há aluno cadastrado com esta matrícula.");
 
             //Informando disciplinas cadastradas
             System.out.println("Disciplinas cadastradas: \n");
@@ -198,13 +197,13 @@ public class Aplicativo {
             Aluno aluno = alunos.pesquisar(new Aluno(matAluno, ""));
             //Verificando se aluno cursou a disciplina
             if (disciplina.getPreRequisitos().isEmpty()) {
-                System.out.println("O aluno de matrícula " + matAluno + " cursou a disciplina de código " + codDisciplina);
+                System.out.println("O aluno " + aluno.getNome() + "-" + matAluno + " cursou a disciplina " + disciplina.getNome() + "-" + codDisciplina);
                 //Adicionando disciplina
                 if (!aluno.getDisciplinasCursadas().contains(disciplina)) {
                     aluno.addDisciplinaCursada(disciplina);
                 }
             } else if (aluno.getDisciplinasCursadas().containsAll(disciplina.getPreRequisitos())) {
-                System.out.println("O aluno de matrícula " + matAluno + " cursou a disciplina de código " + codDisciplina);
+                System.out.println("O aluno " + aluno.getNome() + "-" + matAluno + " cursou a disciplina de " + disciplina.getNome() + "-" + codDisciplina);
                 for (Disciplina d : aluno.getDisciplinasCursadas()) {
                     System.out.println(d.toString());
                 }
@@ -214,7 +213,7 @@ public class Aplicativo {
                 }
             } else {
                 //Informando que aluno não cursou a disciplina
-                System.out.println("O aluno de matrícula " + matAluno + " não cursou a disciplina de código " + codDisciplina);
+                System.out.println("O aluno " + aluno.getNome() + "-" + matAluno + " não cursou a disciplina " + disciplina.getNome() + "-" + codDisciplina);
             }
         } catch (Exception e) {
             //Informando erro ao verificar
@@ -242,13 +241,16 @@ public class Aplicativo {
         try {
             //Verificando opção
             switch (input.nextLine()) {
-                //Cosnulta por matrícula
+                //Consulta por matrícula
                 case "1":
                     //Solicitando matrícula do aluno
                     System.out.println("Digite a matrícula do aluno:");
                     System.out.print(">> ");
                     int codAluno = input.nextInt();
                     aluno = alunos.pesquisar(new Aluno(codAluno, ""));
+                    if (aluno == null) {
+                        throw new RuntimeException("Erro: Aluno não encontrado");
+                    }
                     //Exibindo informações do aluno
                     System.out.println(aluno.toString());
                     System.out.println("Disciplinas cursadas:");
@@ -263,6 +265,9 @@ public class Aplicativo {
                     System.out.print(">> ");
                     String nomeAluno = input.nextLine();
                     aluno = alunos.pesquisar(new Aluno(0, nomeAluno), new ComparadorAlunoPorNome());
+                    if (aluno == null) {
+                        throw new RuntimeException("Erro: Aluno não encontrado");
+                    }
                     //Exibindo informações do aluno
                     System.out.println(aluno.toString());
                     System.out.println("Disciplinas cursadas:");
