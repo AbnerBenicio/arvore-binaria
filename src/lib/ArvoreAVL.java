@@ -53,8 +53,11 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T> {
     }
 
     private No<T> rotacaoEsquerda(No<T> r) {
-        //Parte do Filipe (modificar retorno)
-        return r;
+        No<T> fd = r.getFilhoDireita();
+        r.setFilhoDireita(fd.getFilhoEsquerda());
+        fd.setFilhoEsquerda(r);
+
+        return fd;
     }
 
     private No<T> rotacaoDireita(No<T> r) {
@@ -68,7 +71,8 @@ public class ArvoreAVL<T> extends ArvoreBinaria<T> {
     }
 
     private No<T> rotacaoEsquerdaDireita(No<T> r) {
-        //Parte do Filipe (modificar retorno)
-        return r;
+        r.setFilhoEsquerda(rotacaoEsquerda(r.getFilhoEsquerda()));
+
+        return rotacaoDireita(r);
     }
 }
