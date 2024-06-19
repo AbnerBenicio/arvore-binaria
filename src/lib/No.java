@@ -65,18 +65,21 @@ public class No<T> {
     }
 
     public int obterAltura() {
-        //Parte do João (modificar retorno)
-        return 1;
+        return obterAltura(this);
     }
 
     private int obterAltura(No<T> r) {
-        //Parte do João (modificar retorno)
-        return 1;
+        if(r == null) return -1;
+        else{
+            int dir = obterAltura(r.getFilhoDireita());
+            int esq = obterAltura(r.getFilhoEsquerda());
+            if(dir > esq) return dir+1;
+            else return esq+1;
+        }
     }
 
     public int fatorBalanceamento () {
-        //Parte do João (modificar retorno)
-        return 1;
+        return obterAltura(this.filhoDireita) - obterAltura(this.filhoEsquerda);
     }
     
     
