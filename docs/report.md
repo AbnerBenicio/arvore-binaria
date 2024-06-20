@@ -20,7 +20,7 @@
 
 ## Organização do Código Fonte
 
-O código fonte é organizado como se segue:
+O código fonte pode ser encontrado no [GitHub](https://github.com/abnerbenicio/arvore-binaria) é organizado como se segue:
 
 > ├── docs: Pasta com os relatórios   
 │  └── report.md : Relatório sobre Árvores AVL  
